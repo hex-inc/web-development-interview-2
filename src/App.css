@@ -1,9 +1,9 @@
-
 #root {
   min-height: 100vh;
 }
 
-.AppTitle {
-  text-align: center;
-  margin-top: 20px;
+.AppContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 40px;
 }
