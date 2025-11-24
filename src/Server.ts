@@ -11,26 +11,37 @@ export interface GetMoviesResult {
   reload: () => void;
 }
 
+export interface GetMoviesOptions {
+  max?: number /* max number of movies to return */;
+  longLoading?: boolean /* true will force a 2sec loading time */;
+  withError?: boolean /* true will cause an error to occur */;
+}
+
 // loads movie data when the component mounts
 // reload() may be used to reload data at any time
-export function useGetMovies(
-  max?: number /* max number of movies to return */
-): GetMoviesResult {
+export function useGetMovies(options?: GetMoviesOptions): GetMoviesResult {
   const [data, setData] = useState<Movie[] | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const reload = useCallback(() => {
     setLoading(true);
-    setTimeout(() => {
-      console.log("movies loaded from the server");
-      setData(max === undefined ? MovieDb : MovieDb.slice(0, max));
-      setLoading(false);
-    }, 500);
-  }, [max]);
+    setTimeout(
+      () => {
+        console.log("movies loaded from the server");
+        setError(options?.withError ?? false);
+        setData(
+          options?.max === undefined ? MovieDb : MovieDb.slice(0, options.max)
+        );
+        setLoading(false);
+      },
+      options?.longLoading ? 2000 : 500
+    );
+  }, [options]);
 
   if (data === null && !loading) reload();
 
-  return { data, loading, error: false, reload };
+  return { data, loading, error, reload };
 }
 
 export interface UpdateMoviesResult {
