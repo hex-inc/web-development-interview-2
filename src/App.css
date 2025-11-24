@@ -1,0 +1,9 @@
+
+#root {
+  min-height: 100vh;
+}
+
+.AppTitle {
+  text-align: center;
+  margin-top: 20px;
+}
